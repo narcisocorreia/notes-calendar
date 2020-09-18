@@ -81,6 +81,9 @@ const Button = styled.button`
   letter-spacing: 1px;
   background: #603bbb;
   cursor: pointer;
+  :hover {
+    background: #a184e8;
+  }
 `;
 
 function LoginForm(props) {
@@ -163,7 +166,11 @@ function LoginForm(props) {
   return (
     <Container>
       <InputContainer>
-        <Title>Login</Title>
+        {hasAccount ? (
+          <Title>Entrar no calendario</Title>
+        ) : (
+          <Title>Criar nova conta</Title>
+        )}
         <Label>Email</Label>
         <Input
           type="text"

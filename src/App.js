@@ -6,6 +6,7 @@ import Sheet from "./components/text-sheet";
 import LoginForm from "./components/login-form";
 
 const AppContainer = styled.div`
+  background-color: greenyellow;
   color: white;
   position: absolute;
   top: 0;

@@ -27,7 +27,6 @@ function TextSheet(props) {
         month: "long",
       })}, ${date.getFullYear()}`
     );
-    console.log(props.date);
   }, [date]);
   return (
     <Sheet>

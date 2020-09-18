@@ -3,9 +3,9 @@ import styled from "styled-components";
 
 import Calendar from "./components/calendar-component";
 import Sheet from "./components/text-sheet";
+import LoginForm from "./components/login-form";
 
 const AppContainer = styled.div`
-  background-color: #282c34;
   color: white;
   position: absolute;
   top: 0;
@@ -16,6 +16,7 @@ const AppContainer = styled.div`
   justify-content: space-around;
 `;
 function App() {
+  const [hasUser, setHasUser] = useState(false);
   const [date, setDate] = useState(new Date());
   const onChange = (Date) => {
     setDate(Date);
@@ -23,8 +24,14 @@ function App() {
 
   return (
     <AppContainer>
-      <Calendar onChange={onChange} date={date} />
-      <Sheet date={date} />
+      {hasUser ? (
+        <>
+          <Calendar onChange={onChange} date={date} />
+          <Sheet date={date} />{" "}
+        </>
+      ) : (
+        <LoginForm loginCompleted={setHasUser} />
+      )}
     </AppContainer>
   );
 }

@@ -11,7 +11,6 @@ export async function pushData(data) {
     collection
       .add(data)
       .then((result) => {
-        console.log(result);
         resolve(result);
       })
       .catch((err) => {
@@ -20,7 +19,7 @@ export async function pushData(data) {
   });
 }
 
-export async function getData(date) {
+export async function getTodayData(date) {
   const db = firebase.firestore();
   const collection = await db.collection("calendar-notes");
 
@@ -42,6 +41,27 @@ export async function getData(date) {
   });
 }
 
+export async function getUserData() {
+  const db = firebase.firestore();
+  const collection = await db.collection("calendar-notes");
+
+  return new Promise((resolve, reject) => {
+    const query = collection.where("userID", "==", getCurrentUser().uid);
+    let queryResult = [];
+    query
+      .get()
+      .then((result) => {
+        result.forEach((doc) => {
+          queryResult.push(doc.data());
+        });
+        resolve(queryResult);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
 export function login(email, password) {
   return new Promise((resolve, reject) => {
     firebase
@@ -52,6 +72,10 @@ export function login(email, password) {
         reject(err);
       });
   });
+}
+
+export function logout() {
+  firebase.auth().signOut();
 }
 
 export function createNewUser(email, password) {

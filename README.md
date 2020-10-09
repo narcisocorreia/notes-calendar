@@ -66,3 +66,13 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+
+### Color Pallet
+
+#030b4f - Midnigth Blue Darker
+#101174 - Midnigth Blue
+#03005e - Navy Blue
+#0077B6 - Star Command Blue
+#00B4D8 - Cerulean Crayola
+#90E0EF - Sky Blue Cryola
+#CAF0F8 - Powder Blue

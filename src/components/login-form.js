@@ -6,7 +6,7 @@ const Container = styled.section`
   width: 100%;
   min-height: 100vh;
   padding: 0 20px;
-  background: #e9e9e9;
+  background-color: #caf0f8;
   display: flex;
 `;
 const InputContainer = styled.div`
@@ -20,9 +20,9 @@ const InputContainer = styled.div`
   justify-content: center;
   background: radial-gradient(
     ellipse at left bottom,
-    rgba(22, 24, 47, 1) 0%,
-    rgba(38, 20, 72, 0.9) 59%,
-    rgba(17, 27, 75, 0.9) 100%
+    #030b4f 0%,
+    #101174 59%,
+    #03005e 100%
   );
   box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.8);
 `;
@@ -64,7 +64,7 @@ const InfoMessage = styled.p`
   color: #fff;
 `;
 const InfoMessageSpan = styled.span`
-  color: yellow;
+  color: #caf0f8;
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-left: 5px;
@@ -79,10 +79,10 @@ const Button = styled.button`
   color: #fff;
   font-size: 16px;
   letter-spacing: 1px;
-  background: #603bbb;
+  background: #00b4d8;
   cursor: pointer;
   :hover {
-    background: #a184e8;
+    background: #90e0ef;
   }
 `;
 

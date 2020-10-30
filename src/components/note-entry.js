@@ -15,16 +15,18 @@ const EntryDays = styled.button`
     background: #030b4f;
   }
 `;
-function NoteEntry(prop) {
+
+function NoteEntry(entryProps) {
   const [title, SetTitle] = React.useState("");
+  const { date, changeDayNotes } = entryProps;
 
   React.useEffect(() => {
-    SetTitle(`${prop.date.day}/${prop.date.month + 1}/${prop.date.year}`);
-  }, []);
+    SetTitle(`${date.day}/${date.month + 1}/${date.year}`);
+  }, [date]);
 
   const showNotes = () => {
-    const date = new Date(prop.date.year, prop.date.month, prop.date.day);
-    prop.changeDayNotes(date);
+    const newDate = new Date(date.year, date.month, date.day);
+    changeDayNotes(newDate);
   };
   return <EntryDays onClick={showNotes}>{title}</EntryDays>;
 }

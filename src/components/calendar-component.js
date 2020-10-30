@@ -3,8 +3,8 @@ import ReactCalendar from "react-calendar";
 import styled from "styled-components";
 
 import "react-calendar/dist/Calendar.css";
-import { getUserData } from "../firebase/firebase-actions";
 import NoteEntry from "./note-entry";
+
 const CalendarComponent = styled(ReactCalendar)`
   width: 60%;
   height: 20rem;
@@ -30,25 +30,16 @@ const ListOfDay = styled.div`
   overflow: scroll;
 `;
 
-function Calendar(prop) {
-  const [notes, setNotes] = React.useState([]);
-  const [selectDay, setSelectDay] = React.useState();
-
-  React.useEffect(() => {
-    getUserData().then((result) => {
-      setNotes(result);
-    });
-    setSelectDay(prop.date);
-  }, []);
-
+function Calendar(calendarProps) {
+  const { notes, date,onChange } = calendarProps;
   return (
     <Container>
       <Title>Calendario</Title>
-      <CalendarComponent onChange={prop.onChange} value={selectDay} />
+      <CalendarComponent onChange={onChange} value={date} />
       <ListOfDay>
-        {notes.map((element) => {
+        {notes.map((element, index) => {
           return (
-            <NoteEntry date={element.date} changeDayNotes={prop.onChange} />
+            <NoteEntry date={element.date} changeDayNotes={onChange} key={index} />
           );
         })}
       </ListOfDay>

@@ -86,7 +86,7 @@ const Button = styled.button`
   }
 `;
 
-function LoginForm(props) {
+function LoginForm(loginProps) {
   const [userInfo, setUserInfo] = React.useState({
     email: "",
     password: "",
@@ -97,7 +97,7 @@ function LoginForm(props) {
   });
   const [hasAccount, setHasAccount] = React.useState(true);
 
-  const { loginCompleted } = props;
+  const { loginCompleted } = loginProps;
   const handleChange = (e) => {
     const { id, value } = e.target;
     setUserInfo((prevState) => ({

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import styled from "styled-components";
+import { getUserData } from "./firebase/firebase-actions";
 
 import Calendar from "./components/calendar-component";
 import Sheet from "./components/text-sheet";
 import LoginForm from "./components/login-form";
+import MessageManager from "./components/message-manager";
 import { logout } from "./firebase/firebase-actions";
 
 const AppContainer = styled.div`
@@ -45,9 +47,34 @@ const Button = styled.button`
   }
 `;
 
+
 function App() {
   const [hasUser, setHasUser] = useState(false);
   const [date, setDate] = useState(new Date());
+  const [showMessage, setShowMessage] = useState(false);
+  const [messageType, setMessageType] = useState('');
+  const [messageText, setMessageText] = useState('');
+  const [notes, setNotes] = React.useState([]);
+
+  const setMessage = (messageType, text) => {
+    setMessageType(messageType);
+    setMessageText(text)
+    setShowMessage(true);
+  }
+
+  const getUserNotes = React.useCallback(() => {
+    getUserData().then((result) => {
+      setNotes(result);
+    });
+    setDate(date);
+  }, [date])
+
+
+  const handleExit = () => {
+    setShowMessage(false);
+    getUserNotes();
+  }
+
   const onChange = (Date) => {
     setDate(Date);
   };
@@ -57,17 +84,26 @@ function App() {
     logout();
   };
 
+
+  React.useEffect(() => {
+    if(hasUser){
+      getUserNotes()
+    }
+  }, [getUserNotes,hasUser]);
+
+
   return (
     <AppContainer>
       {hasUser ? (
         <CalendarContainer>
-          <Calendar onChange={onChange} date={date} />
-          <Sheet date={date} />
+          <Calendar onChange={onChange} date={date} notes ={notes} />
+          <Sheet date={date} setMessage={setMessage} />
           <Button onClick={logOutUser}>LogOut</Button>
+          {showMessage && <MessageManager type={messageType} text={messageText} onExitClick={handleExit}/>}
         </CalendarContainer>
       ) : (
         <LoginForm loginCompleted={setHasUser} />
-      )}
+        )}
     </AppContainer>
   );
 }

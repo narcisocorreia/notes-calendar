@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import {
   pushData,
+  uploadData,
+  deleteData,
   getCurrentUser,
   getTodayData,
 } from "../firebase/firebase-actions";
@@ -36,41 +38,66 @@ const Button = styled.button`
   cursor: pointer;
 `;
 
-function TextSheet(props) {
+function TextSheet(sheetProps) {
   const [title, SetTitle] = React.useState("");
   const [textArea, SetTextArea] = React.useState("");
-  const [date, setDate] = React.useState({ day: "", month: "", year: "" });
+  const [fullDate, setFullDate] = React.useState({ day: "", month: "", year: "" });
   const [wasDayNote, SetWasDayNote] = React.useState(false);
+  const [docID, setDocID] = React.useState('');
+
+  const { date, setMessage } = sheetProps;
 
   React.useEffect(() => {
-    setDate({
-      day: props.date.getDate(),
-      month: props.date.getMonth(),
-      year: props.date.getFullYear(),
+    setFullDate({
+      day: date.getDate(),
+      month: date.getMonth(),
+      year: date.getFullYear(),
     });
 
     SetTitle(
-      `${props.date.getDate()} de ${props.date.toLocaleString("default", {
+      `${date.getDate()} de ${date.toLocaleString("default", {
         month: "long",
-      })}, ${props.date.getFullYear()}`
+      })}, ${date.getFullYear()}`
     );
-  }, [props.date]);
+  }, [date]);
 
   React.useEffect(() => {
     SetTextArea("");
     SetWasDayNote(false);
-    getTodayData(date).then((result) => {
-      SetTextArea(result.note);
+    getTodayData(fullDate).then((result) => {
+      SetTextArea(result.data().note);
+      setDocID(result.id)
+      SetWasDayNote(true);
     });
-  }, [date]);
+  }, [fullDate]);
 
   const newCalendarNote = () => {
+    setMessage('wait', 'Aguarde por favor');
     const newData = {
       userID: getCurrentUser().uid,
-      date: date,
+      date: fullDate,
       note: textArea,
     };
-    pushData(newData).then((result) => {});
+    pushData(newData).then((result) => {
+      setMessage('success', 'A nova nota foi guardada');
+      SetWasDayNote(true)
+    });
+  };
+
+  const updateCalendarNote = () => {
+    setMessage('wait', 'Aguarde por favor');
+    uploadData(textArea, docID).then((result) => {
+      setMessage('success', 'A nota foi alterada');
+    });
+  };
+
+  const deleteCalendarNote = () => {
+    setMessage('wait', 'Aguarde por favor');
+    deleteData(docID).then((result) => {
+      SetTextArea("");
+      SetWasDayNote(false)
+      setMessage('success', 'A nota foi apagada');
+    });
   };
 
   return (
@@ -83,14 +110,15 @@ function TextSheet(props) {
         }}
       />
       <ButtonContainer>
-      {wasDayNote ?  <Button type="submit" onClick={newCalendarNote}>
-          Alterar Nota
-        </Button> :  <Button type="submit" onClick={newCalendarNote}>
-          Guardar Nota
-        </Button>}
-        <Button type="submit" onClick={newCalendarNote}>
-          Apagar
-        </Button>
+      {!wasDayNote && <Button type="submit" onClick={newCalendarNote}>Guardar Nota</Button>}
+        {wasDayNote && (<>
+          <Button type="submit" onClick={updateCalendarNote}>
+            Alterar Nota
+          </Button>
+          <Button type="submit" onClick={deleteCalendarNote}>
+            Apagar
+          </Button>
+        </>)}
       </ButtonContainer>
     </Sheet>
   );

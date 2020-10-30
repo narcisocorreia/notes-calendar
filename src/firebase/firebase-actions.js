@@ -19,6 +19,22 @@ export async function pushData(data) {
   });
 }
 
+export async function uploadData(newNote,dockID) {
+  const db = firebase.firestore();
+  const doc = await db.collection("calendar-notes").doc(dockID);
+
+  return doc.update({
+    note: newNote
+  })
+}
+
+export async function deleteData(dockID) {
+  const db = firebase.firestore();
+  const doc = await db.collection("calendar-notes").doc(dockID);
+
+  return doc.delete();
+}
+
 export async function getTodayData(date) {
   const db = firebase.firestore();
   const collection = await db.collection("calendar-notes");
@@ -32,7 +48,7 @@ export async function getTodayData(date) {
       .get()
       .then((result) => {
         result.forEach((doc) => {
-          resolve(doc.data());
+          resolve(doc);
         });
       })
       .catch((err) => {

@@ -10,9 +10,15 @@ const EntryDays = styled.button`
   letter-spacing: 1px;
 
   background-color: transparent;
+  border: 5px solid white;
+  outline:none;
+
+  margin-top: 15px;
 
   :hover {
-    background: #030b4f;
+    background-color: #63a4ff;
+    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
+    border: 2px solid white;
   }
 `;
 

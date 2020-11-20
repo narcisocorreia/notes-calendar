@@ -12,6 +12,9 @@ const TextArea = styled.textarea`
   width: 100%;
   height: 40rem;
   font-family: sans-serif;
+  outline: none;
+  font-size: 28px;
+  resize: none;
 `;
 const Sheet = styled.div`
   width: 45%;
@@ -27,15 +30,21 @@ const ButtonContainer = styled.div`
   padding: 24px 0;
 `;
 const Button = styled.button`
-  border: none;
-  outline: none;
   width: 40%;
   padding: 15px 0;
   color: #fff;
-  font-size: 16px;
+  font-size: 25px;
   letter-spacing: 1px;
-  background: #030b4f;
   cursor: pointer;
+  background-color:transparent;
+  border: 5px solid white;
+  outline: none;
+
+  :hover {
+    background-color: #63a4ff;
+    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
+    border: 2px solid white;
+  }
 `;
 
 function TextSheet(sheetProps) {

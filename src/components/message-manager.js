@@ -1,13 +1,24 @@
 import React from 'react'
 import styled from "styled-components";
 
+const Container = styled.div`
+  background-color: rgba(0, 0, 0, 0.5);
+  left: 0;
+  top: 0;
+  position: absolute;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center
+`;
+
 const Message = styled.button`
   position: absolute;
-  width: 60%;
-  height: 21%;
-  border: none;
-  top: 50%;
-  transform: translateY(-50%);
+  width: 50%;
+  height: 25%;
+  border-radius: 25px;
   color: white;
   font-size: 35px;
 `;
@@ -24,19 +35,23 @@ const ExitBtn = styled.span`
 
 
 const Success= styled(Message)`  
-  background-color: #f44336;
+  background-color: #7ee8fa;
+  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
 `
 const Wait = styled(Message)`  
-  background-color: #2196F3;
+  background-color: #abe9cd;
+  background-image: linear-gradient(315deg, #abe9cd 0%, #3eadcf 74%);
+
 `
 const Failed = styled(Message)`  
-  background-color: #4CAF50;
+  background-color: #f9c1b1;
+  background-image: linear-gradient(315deg, #f9c1b1 0%, #fb8085 74%);
 `
 
 function MessageManager(messageProps) {
     const { type, text, onExitClick} = messageProps;
     return ( 
-        <>
+        <Container>
             {type === 'success' &&
                 <Success >
                     {text}
@@ -55,7 +70,7 @@ function MessageManager(messageProps) {
                     <ExitBtn onClick = {onExitClick}>&times;</ExitBtn>
                 </Wait>
             }
-        </>
+        </Container>
     )
 }
 

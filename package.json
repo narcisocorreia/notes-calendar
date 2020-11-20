@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "main": "public/electron.js",
-  "author":"Narciso Daniel Correia",
+  "author": "Narciso Daniel Correia",
   "license": "MIT",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
@@ -26,7 +26,7 @@
     "eject": "react-scripts eject",
     "electron": "concurrently \"BROWSER=none npm start\" \"wait-on http://localhost:3000 && electron .\"",
     "clean": "rm -rf node_modules",
-    "build-installer": "electron-builder"
+    "builder": "electron-builder"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -47,13 +47,7 @@
     "productName": "Notes Calendar",
     "appId": "notes-calendar",
     "win": {
-      "win": {
-        "target": ["portable"]        
-      },
       "icon": "src/icon.ico"
-    },
-    "portable": {
-      "artifactName": "notes-calendar.exe"
     }
   },
   "devDependencies": {

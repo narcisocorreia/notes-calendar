@@ -8,8 +8,8 @@ import NoteEntry from "./note-entry";
 const CalendarComponent = styled(ReactCalendar)`
   width: 60%;
   height: 20rem;
-  border-radius: 3%;
 `;
+
 const Container = styled.div`
   width: 45%;
   display: flex;

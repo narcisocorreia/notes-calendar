@@ -14,16 +14,18 @@ const AppContainer = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  overflow: hidden;
 `;
 const CalendarContainer = styled.div`
   color: white;
-  background-color: #00b4d8;
   width: 100%;
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: baseline;
   padding-top: 60px;
+  background-color: #2a2a72;
+  background-image: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);
 `;
 
 const Button = styled.button`
@@ -43,7 +45,9 @@ const Button = styled.button`
   background-color: transparent;
 
   :hover {
-    background: #0077b6;
+    background-color: #aecad6;
+    background-image: linear-gradient(315deg, #aecad6 0%, #b8d3fe 74%);
+    border: 2px solid white;
   }
 `;
 
@@ -86,23 +90,24 @@ function App() {
 
 
   React.useEffect(() => {
-    if(hasUser){
+    if (hasUser) {
       getUserNotes()
     }
-  }, [getUserNotes,hasUser]);
+  }, [getUserNotes, hasUser]);
 
 
   return (
     <AppContainer>
       {hasUser ? (
         <CalendarContainer>
-          <Calendar onChange={onChange} date={date} notes ={notes} />
+          <Calendar onChange={onChange} date={date} notes={notes} />
           <Sheet date={date} setMessage={setMessage} />
-          <Button onClick={logOutUser}>LogOut</Button>
-          {showMessage && <MessageManager type={messageType} text={messageText} onExitClick={handleExit}/>}
+          <Button onClick={logOutUser}>Logout</Button>
+          {showMessage &&
+            <MessageManager type={messageType} text={messageText} onExitClick={handleExit} />}
         </CalendarContainer>
       ) : (
-        <LoginForm loginCompleted={setHasUser} />
+          <LoginForm loginCompleted={setHasUser} />
         )}
     </AppContainer>
   );

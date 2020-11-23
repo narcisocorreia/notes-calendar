@@ -19,8 +19,14 @@ const TextArea = styled.textarea`
 const Sheet = styled.div`
   width: 45%;
 `;
-const Title = styled.h1`
+const Title = styled.input`
   text-align: center;
+  color: white;
+  background-color: transparent;
+  border: none;
+  width: 100%;
+  font-size: 30px;
+  outline: none;
 `;
 const ButtonContainer = styled.div`
   width: 100%;
@@ -77,6 +83,7 @@ function TextSheet(sheetProps) {
       SetTextArea(result.data().note);
       setDocID(result.id)
       SetWasDayNote(true);
+      SetTitle(result.data().titulo);
     });
   }, [fullDate]);
 
@@ -86,6 +93,7 @@ function TextSheet(sheetProps) {
       userID: getCurrentUser().uid,
       date: fullDate,
       note: textArea,
+      titulo: title,
     };
     pushData(newData).then((result) => {
       setMessage('success', 'A nova nota foi guardada');
@@ -95,6 +103,7 @@ function TextSheet(sheetProps) {
 
   const updateCalendarNote = () => {
     setMessage('wait', 'Aguarde por favor');
+    console.log(docID);
     uploadData(textArea, docID).then((result) => {
       setMessage('success', 'A nota foi alterada');
     });
@@ -109,9 +118,19 @@ function TextSheet(sheetProps) {
     });
   };
 
+  const handleChange = (e) => {
+    const { value } = e.target;
+    SetTitle(value);
+  };
+
+
   return (
     <Sheet>
-      <Title>{title}</Title>
+      <Title
+        type="text"
+        value={title}
+        id="email"
+        onChange={handleChange}/>
       <TextArea
         value={textArea}
         onChange={(e) => {

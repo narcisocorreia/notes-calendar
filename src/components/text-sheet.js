@@ -18,6 +18,7 @@ const TextArea = styled.textarea`
 `;
 const Sheet = styled.div`
   width: 45%;
+  overflow: hidden;
 `;
 const Title = styled.input`
   text-align: center;
@@ -42,7 +43,7 @@ const Button = styled.button`
   font-size: 25px;
   letter-spacing: 1px;
   cursor: pointer;
-  background-color:transparent;
+  background-color: transparent;
   border: 5px solid white;
   outline: none;
 
@@ -56,9 +57,13 @@ const Button = styled.button`
 function TextSheet(sheetProps) {
   const [title, SetTitle] = React.useState("");
   const [textArea, SetTextArea] = React.useState("");
-  const [fullDate, setFullDate] = React.useState({ day: "", month: "", year: "" });
+  const [fullDate, setFullDate] = React.useState({
+    day: "",
+    month: "",
+    year: "",
+  });
   const [wasDayNote, SetWasDayNote] = React.useState(false);
-  const [docID, setDocID] = React.useState('');
+  const [docID, setDocID] = React.useState("");
 
   const { date, setMessage } = sheetProps;
 
@@ -81,14 +86,14 @@ function TextSheet(sheetProps) {
     SetWasDayNote(false);
     getTodayData(fullDate).then((result) => {
       SetTextArea(result.data().note);
-      setDocID(result.id)
+      setDocID(result.id);
       SetWasDayNote(true);
       SetTitle(result.data().titulo);
     });
   }, [fullDate]);
 
   const newCalendarNote = () => {
-    setMessage('wait', 'Aguarde por favor');
+    setMessage("wait", "Aguarde por favor");
     const newData = {
       userID: getCurrentUser().uid,
       date: fullDate,
@@ -96,25 +101,25 @@ function TextSheet(sheetProps) {
       titulo: title,
     };
     pushData(newData).then((result) => {
-      setMessage('success', 'A nova nota foi guardada');
-      SetWasDayNote(true)
+      setMessage("success", "A nova nota foi guardada");
+      SetWasDayNote(true);
     });
   };
 
   const updateCalendarNote = () => {
-    setMessage('wait', 'Aguarde por favor');
+    setMessage("wait", "Aguarde por favor");
     console.log(docID);
     uploadData(textArea, docID).then((result) => {
-      setMessage('success', 'A nota foi alterada');
+      setMessage("success", "A nota foi alterada");
     });
   };
 
   const deleteCalendarNote = () => {
-    setMessage('wait', 'Aguarde por favor');
+    setMessage("wait", "Aguarde por favor");
     deleteData(docID).then((result) => {
       SetTextArea("");
-      SetWasDayNote(false)
-      setMessage('success', 'A nota foi apagada');
+      SetWasDayNote(false);
+      setMessage("success", "A nota foi apagada");
     });
   };
 
@@ -123,14 +128,9 @@ function TextSheet(sheetProps) {
     SetTitle(value);
   };
 
-
   return (
     <Sheet>
-      <Title
-        type="text"
-        value={title}
-        id="email"
-        onChange={handleChange}/>
+      <Title type="text" value={title} id="email" onChange={handleChange} />
       <TextArea
         value={textArea}
         onChange={(e) => {
@@ -138,15 +138,21 @@ function TextSheet(sheetProps) {
         }}
       />
       <ButtonContainer>
-      {!wasDayNote && <Button type="submit" onClick={newCalendarNote}>Guardar Nota</Button>}
-        {wasDayNote && (<>
-          <Button type="submit" onClick={updateCalendarNote}>
-            Alterar Nota
+        {!wasDayNote && (
+          <Button type="submit" onClick={newCalendarNote}>
+            Guardar Nota
           </Button>
-          <Button type="submit" onClick={deleteCalendarNote}>
-            Apagar
-          </Button>
-        </>)}
+        )}
+        {wasDayNote && (
+          <>
+            <Button type="submit" onClick={updateCalendarNote}>
+              Alterar Nota
+            </Button>
+            <Button type="submit" onClick={deleteCalendarNote}>
+              Apagar
+            </Button>
+          </>
+        )}
       </ButtonContainer>
     </Sheet>
   );

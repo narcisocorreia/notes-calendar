@@ -28,10 +28,11 @@ const ListOfDay = styled.div`
   flex-direction: column;
   align-items: center;
   overflow: scroll;
+  overflow: hidden;
 `;
 
 function Calendar(calendarProps) {
-  const { notes, date,onChange } = calendarProps;
+  const { notes, date, onChange } = calendarProps;
   return (
     <Container>
       <Title>Calendario</Title>
@@ -39,7 +40,11 @@ function Calendar(calendarProps) {
       <ListOfDay>
         {notes.map((element, index) => {
           return (
-            <NoteEntry date={element.date} changeDayNotes={onChange} key={index} />
+            <NoteEntry
+              date={element.date}
+              changeDayNotes={onChange}
+              key={index}
+            />
           );
         })}
       </ListOfDay>

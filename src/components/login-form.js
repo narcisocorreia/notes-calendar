@@ -9,6 +9,7 @@ const Container = styled.section`
   background-color: #63a4ff;
   background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
   display: flex;
+  overflow: hidden;
 `;
 
 const InputContainer = styled.div`
@@ -20,7 +21,7 @@ const InputContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  border-radius:25px;
+  border-radius: 25px;
   background-color: #b1bfd8;
   background-image: linear-gradient(315deg, #b1bfd8 0%, #6782b4 74%);
   box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.8);
@@ -63,7 +64,7 @@ const InfoMessage = styled.p`
   color: #fff;
 `;
 const InfoMessageSpan = styled.span`
-  color: #AD1DEB;
+  color: #ad1deb;
   font-weight: 500;
   letter-spacing: 0.5px;
   margin-left: 5px;
@@ -78,10 +79,10 @@ const Button = styled.button`
   color: #fff;
   font-size: 16px;
   letter-spacing: 1px;
-  background: #0077B6;
+  background: #0077b6;
   cursor: pointer;
   :hover {
-    background: #00B4D8;
+    background: #00b4d8;
   }
 `;
 

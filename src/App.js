@@ -16,6 +16,7 @@ const AppContainer = styled.div`
   right: 0;
   overflow: hidden;
 `;
+
 const CalendarContainer = styled.div`
   color: white;
   width: 100%;
@@ -51,33 +52,31 @@ const Button = styled.button`
   }
 `;
 
-
 function App() {
   const [hasUser, setHasUser] = useState(false);
   const [date, setDate] = useState(new Date());
   const [showMessage, setShowMessage] = useState(false);
-  const [messageType, setMessageType] = useState('');
-  const [messageText, setMessageText] = useState('');
+  const [messageType, setMessageType] = useState("");
+  const [messageText, setMessageText] = useState("");
   const [notes, setNotes] = React.useState([]);
 
   const setMessage = (messageType, text) => {
     setMessageType(messageType);
-    setMessageText(text)
+    setMessageText(text);
     setShowMessage(true);
-  }
+  };
 
   const getUserNotes = React.useCallback(() => {
     getUserData().then((result) => {
       setNotes(result);
     });
     setDate(date);
-  }, [date])
-
+  }, [date]);
 
   const handleExit = () => {
     setShowMessage(false);
     getUserNotes();
-  }
+  };
 
   const onChange = (Date) => {
     setDate(Date);
@@ -88,13 +87,11 @@ function App() {
     logout();
   };
 
-
   React.useEffect(() => {
     if (hasUser) {
-      getUserNotes()
+      getUserNotes();
     }
   }, [getUserNotes, hasUser]);
-
 
   return (
     <AppContainer>
@@ -103,12 +100,17 @@ function App() {
           <Calendar onChange={onChange} date={date} notes={notes} />
           <Sheet date={date} setMessage={setMessage} />
           <Button onClick={logOutUser}>Logout</Button>
-          {showMessage &&
-            <MessageManager type={messageType} text={messageText} onExitClick={handleExit} />}
+          {showMessage && (
+            <MessageManager
+              type={messageType}
+              text={messageText}
+              onExitClick={handleExit}
+            />
+          )}
         </CalendarContainer>
       ) : (
-          <LoginForm loginCompleted={setHasUser} />
-        )}
+        <LoginForm loginCompleted={setHasUser} />
+      )}
     </AppContainer>
   );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -11,7 +11,7 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
 `;
 
 const Message = styled.button`
@@ -28,50 +28,48 @@ const ExitBtn = styled.span`
   font-size: 44px;
   line-height: 20px;
 
-  position:absolute;
+  position: absolute;
   top: 20px;
-  right:20px;
+  right: 20px;
 `;
 
-
-const Success= styled(Message)`  
+const Success = styled(Message)`
   background-color: #7ee8fa;
   background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
-`
-const Wait = styled(Message)`  
+`;
+const Wait = styled(Message)`
   background-color: #abe9cd;
   background-image: linear-gradient(315deg, #abe9cd 0%, #3eadcf 74%);
-
-`
-const Failed = styled(Message)`  
+`;
+const Failed = styled(Message)`
   background-color: #f9c1b1;
   background-image: linear-gradient(315deg, #f9c1b1 0%, #fb8085 74%);
-`
+`;
 
 function MessageManager(messageProps) {
-    const { type, text, onExitClick} = messageProps;
-    return ( 
-        <Container>
-            {type === 'success' &&
-                <Success >
-                    {text}
-                    <ExitBtn onClick = {onExitClick}>&times;</ExitBtn>
-                </Success>
-            }
-            {type === 'failed' && 
-                <Failed >
-                    {text}
-                    <ExitBtn onClick = {onExitClick}>&times;</ExitBtn>
-                </Failed>
-            }
-            {type === 'wait' &&
-                <Wait >
-                    {text}
-                    <ExitBtn onClick = {onExitClick}>&times;</ExitBtn>
-                </Wait>
-            }
-        </Container>
-    )
+  const { type, text, onExitClick } = messageProps;
+  return (
+    <Container>
+      {type === "success" && (
+        <Success>
+          {text}
+          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
+        </Success>
+      )}
+      {type === "failed" && (
+        <Failed>
+          {text}
+          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
+        </Failed>
+      )}
+      {type === "wait" && (
+        <Wait>
+          {text}
+          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
+        </Wait>
+      )}
+    </Container>
+  );
 }
 
 export default MessageManager;

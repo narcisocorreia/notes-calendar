@@ -34,7 +34,7 @@ const ButtonContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  padding: 24px 0;
+  padding: 10px 0;
 `;
 const Button = styled.button`
   width: 40%;
@@ -108,7 +108,6 @@ function TextSheet(sheetProps) {
 
   const updateCalendarNote = () => {
     setMessage("wait", "Aguarde por favor");
-    console.log(docID);
     uploadData(textArea, docID).then((result) => {
       setMessage("success", "A nota foi alterada");
     });

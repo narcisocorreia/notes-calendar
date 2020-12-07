@@ -23,7 +23,7 @@
   "scripts": {
     "start": "run-p start:app start:electron",
     "start:app": "react-scripts start",
-    "start:electron": "npm run build:electron && electron build/electron",
+    "start:electron": "npm run build:electron",
     "build": "react-scripts build",
     "build:electron": "rm -rf build/electron && electron .",
     "buildApp": "electron-builder --win=portable",

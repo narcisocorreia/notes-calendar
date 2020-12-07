@@ -15,41 +15,34 @@ const AppContainer = styled.div`
   left: 0;
   right: 0;
   overflow: hidden;
+  background-color: #63a4ff;
+  background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
 `;
 
 const CalendarContainer = styled.div`
   color: white;
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: baseline;
   padding-top: 60px;
-  background-color: #2a2a72;
-  background-image: linear-gradient(315deg, #2a2a72 0%, #009ffd 74%);
 `;
 
 const Button = styled.button`
   position: absolute;
-  top: 5px;
-  left: 20px;
+  top: 30px;
+  right: 20px;
 
   width: 150px;
   height: 50px;
-  border: none;
-  border-radius: 5%;
 
   color: #fff;
   font-size: 26px;
   letter-spacing: 1px;
 
-  background-color: transparent;
-
-  :hover {
-    background-color: #aecad6;
-    background-image: linear-gradient(315deg, #aecad6 0%, #b8d3fe 74%);
-    border: 2px solid white;
-  }
+  background-color: #aecad6;
+  background-image: linear-gradient(315deg, #aecad6 0%, #b8d3fe 74%);
+  border: 2px solid white;
+  border-radius: 5%;
 `;
 
 function App() {
@@ -69,6 +62,7 @@ function App() {
   const getUserNotes = React.useCallback(() => {
     getUserData().then((result) => {
       setNotes(result);
+      console.log(result);
     });
     setDate(date);
   }, [date]);
@@ -96,18 +90,20 @@ function App() {
   return (
     <AppContainer>
       {hasUser ? (
-        <CalendarContainer>
-          <Calendar onChange={onChange} date={date} notes={notes} />
-          <Sheet date={date} setMessage={setMessage} />
+        <>
           <Button onClick={logOutUser}>Logout</Button>
-          {showMessage && (
-            <MessageManager
-              type={messageType}
-              text={messageText}
-              onExitClick={handleExit}
-            />
-          )}
-        </CalendarContainer>
+          <CalendarContainer>
+            <Calendar onChange={onChange} date={date} notes={notes} />
+            <Sheet date={date} setMessage={setMessage} />
+            {showMessage && (
+              <MessageManager
+                type={messageType}
+                text={messageText}
+                onExitClick={handleExit}
+              />
+            )}
+          </CalendarContainer>
+        </>
       ) : (
         <LoginForm loginCompleted={setHasUser} />
       )}

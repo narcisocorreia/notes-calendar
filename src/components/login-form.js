@@ -2,22 +2,14 @@ import React from "react";
 import styled from "styled-components";
 import { createNewUser, login } from "../firebase/firebase-actions";
 
-const Container = styled.section`
-  width: 100%;
-  min-height: 100vh;
-  padding: 0 20px;
-  background-color: #63a4ff;
-  background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
-  display: flex;
-  overflow: hidden;
-`;
-
 const InputContainer = styled.div`
   padding: 60px;
-  margin: auto;
-  width: 100%;
-  max-width: 520px;
-  min-height: 600px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 520px;
+  height: 500px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -164,65 +156,63 @@ function LoginForm(loginProps) {
   };
 
   return (
-    <Container>
-      <InputContainer>
+    <InputContainer>
+      {hasAccount ? (
+        <Title>Entrar no calendario</Title>
+      ) : (
+        <Title>Criar nova conta</Title>
+      )}
+      <Label>Email</Label>
+      <Input
+        type="text"
+        autoFocus
+        required
+        value={userInfo.email}
+        id="email"
+        onChange={handleChange}
+      />
+      <ErrorMessage>{errorMessage.email}</ErrorMessage>
+      <Label>Password</Label>
+      <Input
+        type="password"
+        required
+        value={userInfo.password}
+        id="password"
+        onChange={handleChange}
+      />
+      <ErrorMessage>{errorMessage.password}</ErrorMessage>
+      <ButtonContainer>
         {hasAccount ? (
-          <Title>Entrar no calendario</Title>
+          <>
+            <Button onClick={handleLogin}>Entrar</Button>
+            <InfoMessage>
+              Não tem conta ?{" "}
+              <InfoMessageSpan
+                onClick={() => {
+                  setHasAccount(!hasAccount);
+                }}
+              >
+                Crie uma.
+              </InfoMessageSpan>
+            </InfoMessage>
+          </>
         ) : (
-          <Title>Criar nova conta</Title>
+          <>
+            <Button onClick={createUser}>Criar</Button>
+            <InfoMessage>
+              Ja tem conta ?{" "}
+              <InfoMessageSpan
+                onClick={() => {
+                  setHasAccount(!hasAccount);
+                }}
+              >
+                Usar conta.
+              </InfoMessageSpan>
+            </InfoMessage>
+          </>
         )}
-        <Label>Email</Label>
-        <Input
-          type="text"
-          autoFocus
-          required
-          value={userInfo.email}
-          id="email"
-          onChange={handleChange}
-        />
-        <ErrorMessage>{errorMessage.email}</ErrorMessage>
-        <Label>Password</Label>
-        <Input
-          type="password"
-          required
-          value={userInfo.password}
-          id="password"
-          onChange={handleChange}
-        />
-        <ErrorMessage>{errorMessage.password}</ErrorMessage>
-        <ButtonContainer>
-          {hasAccount ? (
-            <>
-              <Button onClick={handleLogin}>Entrar</Button>
-              <InfoMessage>
-                Não tem conta ?{" "}
-                <InfoMessageSpan
-                  onClick={() => {
-                    setHasAccount(!hasAccount);
-                  }}
-                >
-                  Crie uma.
-                </InfoMessageSpan>
-              </InfoMessage>
-            </>
-          ) : (
-            <>
-              <Button onClick={createUser}>Criar</Button>
-              <InfoMessage>
-                Ja tem conta ?{" "}
-                <InfoMessageSpan
-                  onClick={() => {
-                    setHasAccount(!hasAccount);
-                  }}
-                >
-                  Usar conta.
-                </InfoMessageSpan>
-              </InfoMessage>
-            </>
-          )}
-        </ButtonContainer>
-      </InputContainer>
-    </Container>
+      </ButtonContainer>
+    </InputContainer>
   );
 }
 

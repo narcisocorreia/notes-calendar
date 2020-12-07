@@ -24,11 +24,15 @@ const Title = styled.h1`
 const ListOfDay = styled.div`
   width: 100%;
   margin-top: 20px;
-  height: 30rem;
+  height: 22rem;
   flex-direction: column;
   align-items: center;
   overflow: scroll;
-  overflow: hidden;
+
+  ::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+  }
 `;
 
 function Calendar(calendarProps) {

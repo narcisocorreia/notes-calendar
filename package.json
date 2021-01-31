@@ -3,33 +3,20 @@
   "version": "1.0.0",
   "private": true,
   "main": "public/electron.js",
+  "homepage": "./",
   "author": "Narciso Daniel Correia",
   "license": "MIT",
-  "dependencies": {
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "concurrently": "^5.3.0",
-    "electron-is-dev": "^1.2.0",
-    "firebase": "^7.19.1",
-    "npm-run-all": "^4.1.5",
-    "react": "^16.13.1",
-    "react-calendar": "^3.1.0",
-    "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3",
-    "styled-components": "^5.1.1",
-    "wait-on": "^5.2.0"
-  },
   "scripts": {
-    "start": "run-p start:app start:electron",
-    "start:app": "react-scripts start",
-    "start:electron": "npm run build:electron",
-    "build": "react-scripts build",
-    "build:electron": "rm -rf build/electron && electron .",
-    "buildApp": "electron-builder --win=portable",
+    "start": "run-p start:react start:electron",
+    "start:react": "cross-env BROWSER=none react-scripts start",
+    "start:electron": "electron .",
+    "build": "run-s clean:build build:react build:pack",
+    "build:react": "react-scripts build",
+    "build:pack": "electron-builder --win=portable",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "clean": "rm -rf node_modules"
+    "clean": "rm -rf node_modules && npm run clean:build",
+    "clean:build": "rm -rf build && rm -rf dist"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,11 +35,25 @@
   },
   "build": {
     "productName": "Notes Calendar",
-    "appId": "notes-calendar",
+    "appId": "com.ndc.notes-calendar",
     "icon": "src/icon.ico"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "electron": "^10.1.5",
-    "electron-builder": "^22.9.1"
+    "electron-builder": "^22.9.1",
+    "npm-run-all": "^4.1.5"
+  },
+  "dependencies": {
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "electron-is-dev": "^1.2.0",
+    "firebase": "^7.19.1",
+    "react": "^16.13.1",
+    "react-calendar": "^3.1.0",
+    "react-dom": "^16.13.1",
+    "react-scripts": "3.4.3",
+    "styled-components": "^5.1.1"
   }
 }

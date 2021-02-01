@@ -8,34 +8,56 @@ import {
   getTodayData,
 } from "../firebase/firebase-actions";
 
-const TextArea = styled.textarea`
-  width: 100%;
-  height: 40rem;
-  font-family: sans-serif;
-  outline: none;
-  font-size: 28px;
-  resize: none;
-`;
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+import { Editor } from "react-draft-wysiwyg";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
 const Sheet = styled.div`
-  width: 45%;
-  overflow: hidden;
+  width: 55%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  margin-right: 1.5rem;
 `;
+
 const Title = styled.input`
   text-align: center;
   color: white;
   background-color: transparent;
   border: none;
   width: 100%;
-  font-size: 30px;
+  font-size: 50px;
   outline: none;
 `;
+
+const TextEditor = styled.div`
+  color: black;
+  height: 100%;
+  width: 100%;
+  color: black;
+  overflow-y: auto;
+
+  .rdw-editor-toolbar {
+    background-color: rgba(191, 191, 191, 0.4);
+    border: none;
+    justify-content: center;
+    border-radius: 15px;
+  }
+  .DraftEditor-root {
+    background-color: white;
+    min-height: 10rem;
+  }
+`;
+
 const ButtonContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: row;
+  justify-content: center;
   justify-content: space-evenly;
   padding: 10px 0;
 `;
+
 const Button = styled.button`
   width: 40%;
   padding: 15px 0;
@@ -56,16 +78,22 @@ const Button = styled.button`
 
 function TextSheet(sheetProps) {
   const [title, SetTitle] = React.useState("");
-  const [textArea, SetTextArea] = React.useState("");
+  const [text, setText] = React.useState("");
+
   const [fullDate, setFullDate] = React.useState({
     day: "",
     month: "",
     year: "",
   });
+
   const [wasDayNote, SetWasDayNote] = React.useState(false);
   const [docID, setDocID] = React.useState("");
 
   const { date, setMessage } = sheetProps;
+
+  const [editorState, setEditorState] = React.useState(() =>
+    EditorState.createEmpty()
+  );
 
   React.useEffect(() => {
     setFullDate({
@@ -82,10 +110,10 @@ function TextSheet(sheetProps) {
   }, [date]);
 
   React.useEffect(() => {
-    SetTextArea("");
     SetWasDayNote(false);
     getTodayData(fullDate).then((result) => {
-      SetTextArea(result.data().note);
+      const note = convertFromRaw(JSON.parse(result.data().note));
+      setEditorState(EditorState.createWithContent(note));
       setDocID(result.id);
       SetWasDayNote(true);
       SetTitle(result.data().titulo);
@@ -97,7 +125,7 @@ function TextSheet(sheetProps) {
     const newData = {
       userID: getCurrentUser().uid,
       date: fullDate,
-      note: textArea,
+      note: text,
       titulo: title,
     };
     pushData(newData).then((result) => {
@@ -108,7 +136,7 @@ function TextSheet(sheetProps) {
 
   const updateCalendarNote = () => {
     setMessage("wait", "Aguarde por favor");
-    uploadData(textArea, docID).then((result) => {
+    uploadData(text, docID).then((result) => {
       setMessage("success", "A nota foi alterada");
     });
   };
@@ -116,7 +144,6 @@ function TextSheet(sheetProps) {
   const deleteCalendarNote = () => {
     setMessage("wait", "Aguarde por favor");
     deleteData(docID).then((result) => {
-      SetTextArea("");
       SetWasDayNote(false);
       setMessage("success", "A nota foi apagada");
     });
@@ -127,15 +154,23 @@ function TextSheet(sheetProps) {
     SetTitle(value);
   };
 
+  React.useEffect(() => {
+    const contentState = JSON.stringify(
+      convertToRaw(editorState.getCurrentContent())
+    );
+
+    setText(contentState);
+  }, [editorState]);
+
   return (
     <Sheet>
       <Title type="text" value={title} id="email" onChange={handleChange} />
-      <TextArea
-        value={textArea}
-        onChange={(e) => {
-          SetTextArea(e.target.value);
-        }}
-      />
+      <TextEditor>
+        <Editor
+          editorState={editorState}
+          onEditorStateChange={setEditorState}
+        />
+      </TextEditor>
       <ButtonContainer>
         {!wasDayNote && (
           <Button type="submit" onClick={newCalendarNote}>

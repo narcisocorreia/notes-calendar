@@ -6,19 +6,26 @@ import "react-calendar/dist/Calendar.css";
 import NoteEntry from "./note-entry";
 
 const CalendarComponent = styled(ReactCalendar)`
-  width: 60%;
+  width: 80%;
   height: 20rem;
+  background-color: rgba(191, 191, 191, 0.2);
+  border: none;
+  border-radius: 15px;
 `;
 
 const Container = styled.div`
-  width: 45%;
+  width: 40%;
+  height: 90%;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
 `;
 
 const Title = styled.h1`
   text-align: center;
+  color: white;
+  font-size: 50px;
 `;
 
 const ListOfDay = styled.div`
@@ -31,7 +38,7 @@ const ListOfDay = styled.div`
 
   ::-webkit-scrollbar {
     width: 0px;
-    background: transparent; /* make scrollbar transparent */
+    background: transparent;
   }
 `;
 

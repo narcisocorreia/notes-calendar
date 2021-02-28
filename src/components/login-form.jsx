@@ -90,6 +90,7 @@ function LoginForm(loginProps) {
   const [hasAccount, setHasAccount] = React.useState(true);
 
   const { loginCompleted } = loginProps;
+
   const handleChange = (e) => {
     const { id, value } = e.target;
     setUserInfo((prevState) => ({

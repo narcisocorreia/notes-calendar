@@ -11,7 +11,7 @@ const EntryDays = styled.button`
 
   background-color: transparent;
   border: 5px solid white;
-  outline:none;
+  outline: none;
 
   margin-top: 15px;
 

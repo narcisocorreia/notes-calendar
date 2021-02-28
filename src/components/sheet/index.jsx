@@ -1,45 +1,54 @@
 import React from "react";
 import styled from "styled-components";
+import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
+
+import TextEditor from "./text-editor";
+
 import {
   pushData,
   uploadData,
   deleteData,
   getCurrentUser,
   getTodayData,
-} from "../firebase/firebase-actions";
+} from "../../firebase/firebase-actions";
 
-import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import NoteEditor from "./note-editor";
+const Container = styled.div`
+  grid-column: 7 / -1;
+  grid-row: 2/ -1;
 
-const Sheet = styled.div`
-  width: 55%;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  margin-right: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 30px 30px;
 `;
 
 const Title = styled.input`
-  text-align: center;
+  grid-column: 1 / -1;
+  grid-row: 1;
+
   color: white;
-  background-color: transparent;
-  border: none;
-  width: 100%;
   font-size: 50px;
+  text-align: center;
+
+  border: none;
   outline: none;
+  background-color: transparent;
 `;
 
 const ButtonContainer = styled.div`
-  width: 100%;
+  grid-column: 1 / -1;
+  grid-row: 7 / span 2;
+
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  align-items: center;
   justify-content: space-evenly;
-  padding: 10px 0;
 `;
 
 const Button = styled.button`
   width: 40%;
+  height: 50%;
+
   padding: 15px 0;
   color: #fff;
   font-size: 25px;
@@ -56,9 +65,14 @@ const Button = styled.button`
   }
 `;
 
-function TextSheet(sheetProps) {
-  const [title, SetTitle] = React.useState("");
+function Sheet(SheetProps) {
+  const { date, setMessage } = SheetProps;
+
   const [text, setText] = React.useState("");
+  const [title, SetTitle] = React.useState("");
+  const [docID, setDocID] = React.useState("");
+
+  const [hasNote, setHasNote] = React.useState(false);
 
   const [fullDate, setFullDate] = React.useState({
     day: "",
@@ -66,14 +80,20 @@ function TextSheet(sheetProps) {
     year: "",
   });
 
-  const [wasDayNote, SetWasDayNote] = React.useState(false);
-  const [docID, setDocID] = React.useState("");
-
-  const { date, setMessage } = sheetProps;
-
   const [editorState, setEditorState] = React.useState(() =>
     EditorState.createEmpty()
   );
+
+  React.useEffect(() => {
+    setHasNote(false);
+    getTodayData(fullDate).then((result) => {
+      const note = convertFromRaw(JSON.parse(result.data().note));
+      setEditorState(EditorState.createWithContent(note));
+      setDocID(result.id);
+      setHasNote(true);
+      SetTitle(result.data().titulo);
+    });
+  }, [fullDate]);
 
   React.useEffect(() => {
     setFullDate({
@@ -90,15 +110,12 @@ function TextSheet(sheetProps) {
   }, [date]);
 
   React.useEffect(() => {
-    SetWasDayNote(false);
-    getTodayData(fullDate).then((result) => {
-      const note = convertFromRaw(JSON.parse(result.data().note));
-      setEditorState(EditorState.createWithContent(note));
-      setDocID(result.id);
-      SetWasDayNote(true);
-      SetTitle(result.data().titulo);
-    });
-  }, [fullDate]);
+    const contentState = JSON.stringify(
+      convertToRaw(editorState.getCurrentContent())
+    );
+
+    setText(contentState);
+  }, [editorState]);
 
   const newCalendarNote = () => {
     setMessage("wait", "Aguarde por favor");
@@ -110,7 +127,7 @@ function TextSheet(sheetProps) {
     };
     pushData(newData).then((result) => {
       setMessage("success", "A nova nota foi guardada");
-      SetWasDayNote(true);
+      setHasNote(true);
     });
   };
 
@@ -124,39 +141,22 @@ function TextSheet(sheetProps) {
   const deleteCalendarNote = () => {
     setMessage("wait", "Aguarde por favor");
     deleteData(docID).then((result) => {
-      SetWasDayNote(false);
+      setHasNote(false);
       setMessage("success", "A nota foi apagada");
     });
   };
 
-  const handleChange = (e) => {
+  const handleTitleChange = (e) => {
     const { value } = e.target;
     SetTitle(value);
   };
 
-  const HandleEditorChange = (editorState) => {
-    setEditorState(editorState);
-  };
-
-  React.useEffect(() => {
-    const contentState = JSON.stringify(
-      convertToRaw(editorState.getCurrentContent())
-    );
-
-    setText(contentState);
-  }, [editorState]);
-
   return (
-    <Sheet>
-      <Title type="text" value={title} id="email" onChange={handleChange} />
-      <NoteEditor editorState={editorState} onChange={HandleEditorChange} />
+    <Container>
+      <Title type="text" value={title} onChange={handleTitleChange} />
+      <TextEditor editorState={editorState} onChange={setEditorState} />
       <ButtonContainer>
-        {!wasDayNote && (
-          <Button type="submit" onClick={newCalendarNote}>
-            Guardar Nota
-          </Button>
-        )}
-        {wasDayNote && (
+        {hasNote ? (
           <>
             <Button type="submit" onClick={updateCalendarNote}>
               Alterar Nota
@@ -165,10 +165,14 @@ function TextSheet(sheetProps) {
               Apagar
             </Button>
           </>
+        ) : (
+          <Button type="submit" onClick={newCalendarNote}>
+            Guardar Nota
+          </Button>
         )}
       </ButtonContainer>
-    </Sheet>
+    </Container>
   );
 }
 
-export default TextSheet;
+export default Sheet;

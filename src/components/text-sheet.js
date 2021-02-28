@@ -9,8 +9,7 @@ import {
 } from "../firebase/firebase-actions";
 
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import NoteEditor from "./note-editor";
 
 const Sheet = styled.div`
   width: 55%;
@@ -28,25 +27,6 @@ const Title = styled.input`
   width: 100%;
   font-size: 50px;
   outline: none;
-`;
-
-const TextEditor = styled.div`
-  color: black;
-  height: 100%;
-  width: 100%;
-  color: black;
-  overflow-y: auto;
-
-  .rdw-editor-toolbar {
-    background-color: rgba(191, 191, 191, 0.4);
-    border: none;
-    justify-content: center;
-    border-radius: 15px;
-  }
-  .DraftEditor-root {
-    background-color: white;
-    min-height: 10rem;
-  }
 `;
 
 const ButtonContainer = styled.div`
@@ -154,6 +134,10 @@ function TextSheet(sheetProps) {
     SetTitle(value);
   };
 
+  const HandleEditorChange = (editorState) => {
+    setEditorState(editorState);
+  };
+
   React.useEffect(() => {
     const contentState = JSON.stringify(
       convertToRaw(editorState.getCurrentContent())
@@ -165,12 +149,7 @@ function TextSheet(sheetProps) {
   return (
     <Sheet>
       <Title type="text" value={title} id="email" onChange={handleChange} />
-      <TextEditor>
-        <Editor
-          editorState={editorState}
-          onEditorStateChange={setEditorState}
-        />
-      </TextEditor>
+      <NoteEditor editorState={editorState} onChange={HandleEditorChange} />
       <ButtonContainer>
         {!wasDayNote && (
           <Button type="submit" onClick={newCalendarNote}>

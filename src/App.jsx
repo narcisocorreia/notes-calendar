@@ -9,6 +9,7 @@ import LoginForm from "./components/login-form";
 import MessageManager from "./components/message-manager";
 
 import { getUserData, logout } from "./firebase/firebase-actions";
+import "./assets/fonts/fonts.css";
 
 const AppContainer = styled.div`
   display: grid;

@@ -2,67 +2,93 @@ import React from "react";
 import styled from "styled-components";
 import { createNewUser, login } from "../firebase/firebase-actions";
 
-const InputContainer = styled.div`
-  padding: 60px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 520px;
-  height: 500px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+const Container = styled.div`
+  grid-column: 4 / span 6;
+  grid-row: 2 / span 4;
+  place-self: center;
+
+  width: 85%;
+  height: 90%;
+
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  gap: 30px 30px;
+
+  place-items: center;
+
   border-radius: 25px;
-  background-color: #b1bfd8;
-  background-image: linear-gradient(315deg, #b1bfd8 0%, #6782b4 74%);
-  box-shadow: 0 50px 70px -20px rgba(0, 0, 0, 0.8);
+  background-color: white;
+  box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.15);
+
+  font-family: "Quicksand";
 `;
-const ButtonContainer = styled.div`
-  width: 100%;
-  padding: 24px 0;
-`;
+
 const Title = styled.h1`
+  grid-row: 1 / span 2;
   text-align: center;
-  color: white;
-  display: block;
+  color: #232323;
   font-size: 36px;
-  line-height: 1;
+  place-self: end center;
 `;
+
 const Label = styled.label`
-  color: white;
+  color: #232323;
   margin: 14px 0;
   display: block;
-  font-size: 22px;
+  font-size: 1.5rem;
   line-height: 1;
 `;
+
+const InputContainer = styled.div`
+  grid-row: ${(props) => `${props.col} / span 2`};
+  place-self: ${(props) => `${props.placeSelf} center`};
+  width: 85%;
+`;
+
 const Input = styled.input`
-  width: 100%;
   border: none;
   outline: none;
-  font-size: 19px;
-  padding: 10px;
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-  letter-spacing: 1px;
+  padding: 20px;
+  border-radius: 4px;
+  background: #ececec;
+
+  width: 100%;
+  box-sizing: border-box;
+
+  color: #232323;
+  font-size: 1.3rem;
+  font-family: "Quicksand";
 `;
+
 const ErrorMessage = styled.p`
   color: red;
   font-size: 16px;
 `;
-const InfoMessage = styled.p`
-  margin: 14px 0 0 0;
-  text-align: right;
-  color: #fff;
+
+const InputComponent = (props) => {
+  return (
+    <InputContainer placeSelf={props.placeSelf} col={props.col}>
+      <Label>{props.label}</Label>
+      <Input
+        type={props.type}
+        autoFocus
+        required
+        value={props.value}
+        id={props.id}
+        onChange={props.handleChange}
+      />
+      <ErrorMessage>{props.errorMessage}</ErrorMessage>
+    </InputContainer>
+  );
+};
+
+const ButtonContainer = styled.div`
+  grid-row: 7 / -1;
+  place-self: center;
+  width: 80%;
 `;
-const InfoMessageSpan = styled.span`
-  color: #ad1deb;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-left: 5px;
-  cursor: pointer;
-  transition: all 400ms ease-in-out;
-`;
+
 const Button = styled.button`
   border: none;
   outline: none;
@@ -71,11 +97,26 @@ const Button = styled.button`
   color: #fff;
   font-size: 16px;
   letter-spacing: 1px;
-  background: #0077b6;
+  border-radius: 4px;
+  background-color: #63a4ff;
   cursor: pointer;
-  :hover {
-    background: #00b4d8;
-  }
+  font-family: "Quicksand";
+`;
+
+const InfoMessage = styled.p`
+  margin: 14px 0 0 0;
+  text-align: right;
+  color: #232323;
+`;
+
+const InfoMessageSpan = styled.span`
+  color: #90e0ef;
+  letter-spacing: 0.5px;
+  margin-left: 5px;
+  cursor: pointer;
+  transition: all 400ms ease-in-out;
+  font-style: oblique;
+  font-family: "Quicksand-SemiBold";
 `;
 
 function LoginForm(loginProps) {
@@ -83,11 +124,13 @@ function LoginForm(loginProps) {
     email: "",
     password: "",
   });
+
   const [errorMessage, setErrorMessage] = React.useState({
     email: "",
     password: "",
   });
-  const [hasAccount, setHasAccount] = React.useState(true);
+
+  const [createNewAccount, setCreateNewAccount] = React.useState(false);
 
   const { loginCompleted } = loginProps;
 
@@ -136,10 +179,10 @@ function LoginForm(loginProps) {
   };
 
   const createUser = () => {
-    clearError(hasAccount);
+    clearError(createNewAccount);
     createNewUser(userInfo.email, userInfo.password)
       .then(() => {
-        setHasAccount(true);
+        setCreateNewAccount(true);
         clearUser();
       })
       .catch((err) => {
@@ -156,64 +199,89 @@ function LoginForm(loginProps) {
       });
   };
 
-  return (
-    <InputContainer>
-      {hasAccount ? (
-        <Title>Entrar no calendario</Title>
-      ) : (
+  if (createNewAccount) {
+    return (
+      <Container>
         <Title>Criar nova conta</Title>
-      )}
-      <Label>Email</Label>
-      <Input
+
+        <InputComponent
+          type="text"
+          handleChange={handleChange}
+          value={userInfo.email}
+          id="email"
+          errorMessage={errorMessage.email}
+          label="Email"
+          placeSelf="end"
+          col="3"
+        />
+
+        <InputComponent
+          type="password"
+          handleChange={handleChange}
+          value={userInfo.password}
+          id="password"
+          errorMessage={errorMessage.password}
+          label="Password"
+          placeSelf="start"
+          col="5"
+        />
+
+        <ButtonContainer>
+          <Button onClick={createUser}>Criar</Button>
+          <InfoMessage>
+            Ja tem conta ?
+            <InfoMessageSpan
+              onClick={() => {
+                setCreateNewAccount(false);
+              }}
+            >
+              Usar conta.
+            </InfoMessageSpan>
+          </InfoMessage>
+        </ButtonContainer>
+      </Container>
+    );
+  }
+
+  return (
+    <Container>
+      <Title>Login</Title>
+      <InputComponent
         type="text"
-        autoFocus
-        required
+        handleChange={handleChange}
         value={userInfo.email}
         id="email"
-        onChange={handleChange}
+        errorMessage={errorMessage.email}
+        label="Email"
+        placeSelf="end"
+        col="3"
       />
-      <ErrorMessage>{errorMessage.email}</ErrorMessage>
-      <Label>Password</Label>
-      <Input
+
+      <InputComponent
         type="password"
-        required
+        handleChange={handleChange}
         value={userInfo.password}
         id="password"
-        onChange={handleChange}
+        errorMessage={errorMessage.password}
+        label="Password"
+        placeSelf="start"
+        col="5"
       />
-      <ErrorMessage>{errorMessage.password}</ErrorMessage>
+
       <ButtonContainer>
-        {hasAccount ? (
-          <>
-            <Button onClick={handleLogin}>Entrar</Button>
-            <InfoMessage>
-              Não tem conta ?{" "}
-              <InfoMessageSpan
-                onClick={() => {
-                  setHasAccount(!hasAccount);
-                }}
-              >
-                Crie uma.
-              </InfoMessageSpan>
-            </InfoMessage>
-          </>
-        ) : (
-          <>
-            <Button onClick={createUser}>Criar</Button>
-            <InfoMessage>
-              Ja tem conta ?{" "}
-              <InfoMessageSpan
-                onClick={() => {
-                  setHasAccount(!hasAccount);
-                }}
-              >
-                Usar conta.
-              </InfoMessageSpan>
-            </InfoMessage>
-          </>
-        )}
+        <Button onClick={handleLogin}>Entrar</Button>
+        <InfoMessage>
+          Não tem conta ?
+          <InfoMessageSpan
+            onClick={() => {
+              setCreateNewAccount(true);
+            }}
+          >
+            Crie uma.
+          </InfoMessageSpan>
+        </InfoMessage>
       </ButtonContainer>
-    </InputContainer>
+    </Container>
   );
 }
 

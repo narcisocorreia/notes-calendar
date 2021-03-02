@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as WaterMark } from "../assets/svg/logo_narciso.svg";
+import { ReactComponent as WaterMark } from "../assets/svg/water-mark.svg";
 
 const Container = styled.div`
   grid-column: 1 / -1;

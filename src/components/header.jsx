@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { ReactComponent as WaterMark } from "../assets/svg/water-mark.svg";
+import { ReactComponent as Logo } from "../assets/svg/ndc_logo.svg";
 
 const Container = styled.div`
   grid-column: 1 / -1;
@@ -10,32 +10,34 @@ const Container = styled.div`
   grid-template-rows: repeat(1, 1fr);
   gap: 30px 30px;
 
+  background-color: white;
   place-items: center;
+  font-family: "Quicksand";
+
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 `;
 
 const LogoutButton = styled.button`
-  color: #fff;
-  font-size: 2.6rem;
-
-  background-color: transparent;
-  border-radius: 5%;
+  color: white;
+  font-size: 2rem;
+  background-color: #63a4ff;
+  border-radius: 4px;
   border: none;
+  width: 50%;
+  height: 30%;
 
   grid-column: 11 / span 2;
-
-  :hover {
-    background-image: linear-gradient(315deg, #aecad6 0%, #b8d3fe 74%);
-  }
+  font-family: "Quicksand";
 `;
 
 const AppTitle = styled.h1`
-  color: #fff;
+  color: #232323;
   font-size: 3rem;
   text-transform: uppercase;
   grid-column: 4 / span 6;
 `;
 
-const MyWaterMark = styled(WaterMark)`
+const DevLogo = styled(Logo)`
   grid-column: 1 / span 1;
 `;
 
@@ -43,9 +45,9 @@ function Header(HeaderProps) {
   const { onLogoutClick } = HeaderProps;
   return (
     <Container>
-      <MyWaterMark width="100%" height="100%" />
+      <DevLogo fill="#030b4f" width="100%" height="100%" />
       <AppTitle>Calendario</AppTitle>
-      <LogoutButton onClick={onLogoutClick}>Sair</LogoutButton>
+      <LogoutButton onClick={onLogoutClick}>sair</LogoutButton>
     </Container>
   );
 }

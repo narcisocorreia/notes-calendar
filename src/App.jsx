@@ -74,8 +74,8 @@ function App() {
     return (
       <AppContainer>
         <Header onLogoutClick={logOutUser} />
-        <Sheet date={date} setMessage={setMessage} />
         <Calendar onChange={onChange} date={date} notes={notes} />
+        <Sheet date={date} setMessage={setMessage} />
 
         {showMessage && (
           <MessageManager

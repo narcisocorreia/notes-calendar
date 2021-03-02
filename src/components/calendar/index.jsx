@@ -14,6 +14,7 @@ const Container = styled.div`
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, 1fr);
   gap: 30px 30px;
+  padding: 0 0 0 1rem;
 `;
 
 const StyledCalendar = styled(ReactCalendar)`

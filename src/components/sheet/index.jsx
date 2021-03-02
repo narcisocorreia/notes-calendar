@@ -15,6 +15,7 @@ import {
 const Container = styled.div`
   grid-column: 7 / -1;
   grid-row: 2/ -1;
+  padding: 0 1rem 0 0;
 
   display: grid;
   grid-template-columns: repeat(6, 1fr);

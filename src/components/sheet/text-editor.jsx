@@ -18,6 +18,9 @@ const ToolBar = styled.div`
 
   display: flex;
   place-content: center;
+  background-color: #ececec59;
+  border-radius: 4px;
+  z-index: 1;
 `;
 
 const Button = styled.button`
@@ -33,17 +36,17 @@ const Button = styled.button`
 `;
 
 const EditorContainer = styled.div`
-  background-color: white;
   grid-column: 1 / -1;
-  grid-row: 2 / -1;
+  grid-row: 1 / -1;
+  margin-top: 6rem;
 
+  background-color: white;
+  border-radius: 4px;
   overflow-y: auto;
-  border: 1px transparent solid;
+
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI";
-  font-size: 100%;
+  font-size: 1rem;
   letter-spacing: 1.2px;
-  border-radius: 6px;
-  text-align: left;
   line-height: 1.5em;
   color: black;
 `;

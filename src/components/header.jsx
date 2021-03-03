@@ -4,7 +4,7 @@ import { ReactComponent as Logo } from "../assets/svg/ndc_logo.svg";
 
 const Container = styled.div`
   grid-column: 1 / -1;
-
+  height: 80%;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(1, 1fr);
@@ -20,9 +20,12 @@ const Container = styled.div`
 const LogoutButton = styled.button`
   color: white;
   font-size: 2rem;
+  line-height: 2rem;
+
   background-color: #63a4ff;
   border-radius: 4px;
   border: none;
+
   width: 50%;
   height: 30%;
 

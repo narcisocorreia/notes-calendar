@@ -15,7 +15,7 @@ import {
 const Container = styled.div`
   grid-column: 7 / -1;
   grid-row: 2/ -1;
-  padding: 0 1rem 0 0;
+  padding: 2rem 1rem 0 0;
 
   display: grid;
   grid-template-columns: repeat(6, 1fr);
@@ -28,12 +28,13 @@ const Title = styled.input`
   grid-row: 1;
 
   color: white;
-  font-size: 50px;
+  font-size: 3rem;
   text-align: center;
 
   border: none;
   outline: none;
   background-color: transparent;
+  font-family: "Quicksand";
 `;
 
 const ButtonContainer = styled.div`
@@ -52,18 +53,15 @@ const Button = styled.button`
 
   padding: 15px 0;
   color: #fff;
-  font-size: 25px;
+  font-size: 2rem;
   letter-spacing: 1px;
   cursor: pointer;
-  background-color: transparent;
-  border: 5px solid white;
-  outline: none;
 
-  :hover {
-    background-color: #63a4ff;
-    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
-    border: 2px solid white;
-  }
+  border: none;
+  border-radius: 4px;
+
+  background-color: #63a4ff;
+  font-family: "Quicksand";
 `;
 
 function Sheet(SheetProps) {

@@ -14,7 +14,7 @@ const Container = styled.div`
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, 1fr);
   gap: 30px 30px;
-  padding: 0 0 0 1rem;
+  padding: 2rem 0 0 1rem;
 `;
 
 const StyledCalendar = styled(ReactCalendar)`
@@ -24,7 +24,9 @@ const StyledCalendar = styled(ReactCalendar)`
   place-self: center;
   height: 100%;
   width: 100%;
+
   border: none;
+  border-radius: 4px;
   box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
 
   & > .react-calendar__navigation {
@@ -82,7 +84,7 @@ const StyledCalendar = styled(ReactCalendar)`
           }
           & > .react-calendar__month-view__days {
             & > button {
-              font-size: 1.3rem;
+              font-size: 1.6rem;
               font-family: "Quicksand";
             }
             & > .react-calendar__tile--active:enabled:hover,

@@ -23,23 +23,16 @@ const AppContainer = styled.div`
 
 function App() {
   const [hasUser, setHasUser] = React.useState(false);
-  const [showMessage, setShowMessage] = React.useState(false);
-
-  const [messageInfo, setMessageInfo] = React.useState({
-    type: "",
-    text: "",
-  });
 
   const [notes, setNotes] = React.useState([]);
 
   const [date, setDate] = React.useState(new Date());
 
-  const setMessage = (messageType, text) => {
-    setMessageInfo({
-      type: messageType,
-      text: text,
-    });
+  const [showMessage, setShowMessage] = React.useState(false);
+  const [messageType, setMessageType] = React.useState("wait");
 
+  const handleNewMessage = (messageType) => {
+    setMessageType(messageType);
     setShowMessage(true);
   };
 
@@ -73,17 +66,12 @@ function App() {
   if (hasUser) {
     return (
       <AppContainer>
+        {showMessage && (
+          <MessageManager type={messageType} onExitClick={handleExit} />
+        )}
         <Header onLogoutClick={logOutUser} />
         <Calendar onChange={onChange} date={date} notes={notes} />
-        <Sheet date={date} setMessage={setMessage} />
-
-        {showMessage && (
-          <MessageManager
-            type={messageInfo.type}
-            text={messageInfo.text}
-            onExitClick={handleExit}
-          />
-        )}
+        <Sheet date={date} setMessage={handleNewMessage} />
       </AppContainer>
     );
   }

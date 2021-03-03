@@ -4,7 +4,9 @@ import { ReactComponent as Logo } from "../assets/svg/ndc_logo.svg";
 
 const Container = styled.div`
   grid-column: 1 / -1;
+  grid-row: 1;
   height: 80%;
+
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   grid-template-rows: repeat(1, 1fr);

@@ -117,7 +117,7 @@ function Sheet(SheetProps) {
   }, [editorState]);
 
   const newCalendarNote = () => {
-    setMessage("wait", "Aguarde por favor");
+    setMessage("wait");
     const newData = {
       userID: getCurrentUser().uid,
       date: fullDate,
@@ -125,23 +125,23 @@ function Sheet(SheetProps) {
       titulo: title,
     };
     pushData(newData).then((result) => {
-      setMessage("success", "A nova nota foi guardada");
       setHasNote(true);
+      setMessage("success");
     });
   };
 
   const updateCalendarNote = () => {
-    setMessage("wait", "Aguarde por favor");
+    setMessage("wait");
     uploadData(text, docID).then((result) => {
-      setMessage("success", "A nota foi alterada");
+      setMessage("success");
     });
   };
 
   const deleteCalendarNote = () => {
-    setMessage("wait", "Aguarde por favor");
+    setMessage("wait");
     deleteData(docID).then((result) => {
       setHasNote(false);
-      setMessage("success", "A nota foi apagada");
+      setMessage("success");
     });
   };
 

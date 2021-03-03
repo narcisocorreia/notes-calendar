@@ -39,7 +39,7 @@ const EditorContainer = styled.div`
   grid-column: 1 / -1;
   grid-row: 1 / -1;
   margin-top: 6rem;
-
+  padding: 0 1rem;
   background-color: white;
   border-radius: 4px;
   overflow-y: auto;

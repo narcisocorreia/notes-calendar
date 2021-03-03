@@ -2,72 +2,108 @@ import React from "react";
 import styled from "styled-components";
 
 const Container = styled.div`
-  background-color: rgba(0, 0, 0, 0.5);
-  left: 0;
-  top: 0;
-  position: absolute;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 100;
+  grid-column: 1/-1;
+  grid-row: 1/-1;
+
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 30px 30px;
 `;
 
-const Message = styled.button`
-  position: absolute;
-  width: 50%;
-  height: 25%;
+const Background = styled.div`
+  grid-column: 4 / span 6;
+  grid-row: 2 / span 4;
+  place-self: center;
   border-radius: 25px;
-  color: white;
-  font-size: 35px;
+
+  font-family: "Quicksand";
+
+  width: 80%;
+  height: 75%;
+  background-color: white;
+
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  gap: 30px 30px;
 `;
 
-const ExitBtn = styled.span`
+const Title = styled.h1`
+  grid-row: 1 / span 2;
+  text-align: center;
+  font-size: 4rem;
+  place-self: center;
+`;
+
+const Message = styled.p`
+  grid-row: 3 / span 2;
   font-weight: bold;
-  font-size: 44px;
-  line-height: 20px;
+  font-size: 2rem;
+  line-height: 2rem;
+  place-self: center;
 
-  position: absolute;
-  top: 20px;
-  right: 20px;
+  background-color: white;
 `;
 
-const Success = styled(Message)`
-  background-color: #7ee8fa;
-  background-image: linear-gradient(315deg, #7ee8fa 0%, #80ff72 74%);
+const ExitBtn = styled.button`
+  grid-row: 5 / span 2;
+  color: white;
+  font-size: 1.5rem;
+  line-height: 2rem;
+
+  background-color: #63a4ff;
+  border-radius: 4px;
+  border: none;
+
+  width: 30%;
+  height: 30%;
+
+  place-self: center;
 `;
-const Wait = styled(Message)`
-  background-color: #abe9cd;
-  background-image: linear-gradient(315deg, #abe9cd 0%, #3eadcf 74%);
+
+const Success = styled(Title)`
+  color: green;
 `;
-const Failed = styled(Message)`
-  background-color: #f9c1b1;
-  background-image: linear-gradient(315deg, #f9c1b1 0%, #fb8085 74%);
+
+const Failed = styled(Title)`
+  color: red;
 `;
 
 function MessageManager(messageProps) {
-  const { type, text, onExitClick } = messageProps;
+  const { type, onExitClick } = messageProps;
+
+  if (type === "Wait") {
+    return (
+      <Container>
+        <Background>
+          <Message>Aguarde por favor.</Message>
+        </Background>
+      </Container>
+    );
+  }
+
+  if (type === "failed") {
+    return (
+      <Container>
+        <Background>
+          <Failed>Erro</Failed>
+          <Message>Ocorreu um erro inesperado.</Message>
+          <ExitBtn onClick={onExitClick}>Continuar</ExitBtn>
+        </Background>
+      </Container>
+    );
+  }
+
   return (
     <Container>
-      {type === "success" && (
-        <Success>
-          {text}
-          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
-        </Success>
-      )}
-      {type === "failed" && (
-        <Failed>
-          {text}
-          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
-        </Failed>
-      )}
-      {type === "wait" && (
-        <Wait>
-          {text}
-          <ExitBtn onClick={onExitClick}>&times;</ExitBtn>
-        </Wait>
-      )}
+      <Background>
+        <Success>Sucesso</Success>
+        <Message>Nota guardada com sucesso.</Message>
+        <ExitBtn onClick={onExitClick}>Continuar</ExitBtn>
+      </Background>
     </Container>
   );
 }

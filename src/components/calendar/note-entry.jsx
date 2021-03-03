@@ -2,24 +2,20 @@ import React from "react";
 import styled from "styled-components";
 
 const EntryDays = styled.button`
-  width: 100%;
-  height: 50px;
-  border: none;
+  width: 90%;
   color: #fff;
-  font-size: 20px;
-  letter-spacing: 1px;
+  font-size: 2rem;
+  line-height: 3rem;
 
   background-color: transparent;
-  border: 5px solid white;
+  border-radius: 4px;
+  border: none;
   outline: none;
 
   margin-top: 15px;
+  font-family: "Quicksand";
 
-  :hover {
-    background-color: #63a4ff;
-    background-image: linear-gradient(315deg, #63a4ff 0%, #83eaf1 74%);
-    border: 2px solid white;
-  }
+  background-color: #63a4ff;
 `;
 
 function NoteEntry(entryProps) {

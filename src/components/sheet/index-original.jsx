@@ -1,8 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { EditorState, convertFromRaw, convertToRaw } from "draft-js";
-import { Editor } from "react-draft-wysiwyg";
-import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+import TextEditor from "./text-editor";
 
 import {
   pushData,
@@ -21,46 +21,6 @@ const Container = styled.div`
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(8, 1fr);
   gap: 30px 30px;
-
-  & > .rdw-editor-wrapper {
-    grid-column: 1 / -1;
-    grid-row: 2 / span 5;
-
-    padding: 0 1rem;
-
-    & > .rdw-editor-toolbar {
-      grid-column: 1 / -1;
-      grid-row: 1;
-
-      display: flex;
-      place-content: center;
-      background-color: #ececec59;
-      border-radius: 4px;
-      z-index: 1;
-
-      & > div {
-        margin: 0.25em;
-
-        font-family: "Quicksand";
-
-        background-color: transparent;
-        border: none;
-
-        color: #263135;
-
-        & > div {
-          max-width: 100%;
-        }
-      }
-    }
-    & > .rdw-editor-main {
-      background-color: white;
-      grid-row: 2 / span 5;
-
-      overflow-y: auto;
-      border-radius: 4px;
-    }
-  }
 `;
 
 const Title = styled.input`
@@ -196,28 +156,7 @@ function Sheet(SheetProps) {
   return (
     <Container>
       <Title type="text" value={title} onChange={handleTitleChange} />
-      <Editor
-        editorState={editorState}
-        onEditorStateChange={setEditorState}
-        toolbar={{
-          options: [
-            "inline",
-            "blockType",
-            "fontSize",
-            "list",
-            "textAlign",
-            "history",
-            "colorPicker",
-            "emoji",
-          ],
-
-          inline: { inDropdown: true },
-          list: { inDropdown: true },
-          textAlign: { inDropdown: true },
-          link: { inDropdown: true },
-        }}
-      />
-
+      <TextEditor editorState={editorState} onChange={setEditorState} />
       <ButtonContainer>
         {hasNote ? (
           <>

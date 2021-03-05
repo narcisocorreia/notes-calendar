@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Editor, RichUtils } from "draft-js";
+import ToolBar from "./tool-bar";
 
 const Container = styled.div`
   grid-column: 1 / -1;
@@ -12,34 +13,13 @@ const Container = styled.div`
   gap: 30px 30px;
 `;
 
-const ToolBar = styled.div`
-  grid-column: 1 / -1;
-  grid-row: 1;
-
-  display: flex;
-  place-content: center;
-  background-color: #ececec59;
-  border-radius: 4px;
-  z-index: 1;
-`;
-
-const Button = styled.button`
-  margin: 0.25em;
-
-  font-family: "Times";
-
-  background-color: transparent;
-  border: none;
-
-  color: #263135;
-  font-size: 2rem;
-`;
-
 const EditorContainer = styled.div`
   grid-column: 1 / -1;
   grid-row: 1 / -1;
-  margin-top: 6rem;
+
+  margin-top: 5rem;
   padding: 0 1rem;
+
   background-color: white;
   border-radius: 4px;
   overflow-y: auto;
@@ -63,39 +43,9 @@ function TextEditor(editorProps) {
     return "not-handled";
   };
 
-  const onUnderlineClick = () => {
-    onChange(RichUtils.toggleInlineStyle(editorState, "UNDERLINE"));
-  };
-
-  const onBoldClick = () => {
-    onChange(RichUtils.toggleInlineStyle(editorState, "BOLD"));
-  };
-
-  const onItalicClick = () => {
-    onChange(RichUtils.toggleInlineStyle(editorState, "ITALIC"));
-  };
-
-  const onStrikeThroughClick = () => {
-    onChange(RichUtils.toggleInlineStyle(editorState, "STRIKETHROUGH"));
-  };
-
   return (
     <Container>
-      <ToolBar>
-        <Button onClick={onUnderlineClick}>
-          <ins>U</ins>
-        </Button>
-        <Button onClick={onBoldClick}>
-          <b>B</b>
-        </Button>
-        <Button onClick={onItalicClick}>
-          <em>I</em>
-        </Button>
-        <Button onClick={onStrikeThroughClick}>
-          <del>abc</del>
-        </Button>
-      </ToolBar>
-
+      <ToolBar editorState={editorState} onChange={onChange} />
       <EditorContainer>
         <Editor
           editorState={editorState}

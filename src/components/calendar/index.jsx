@@ -14,7 +14,7 @@ const Container = styled.div`
   grid-template-columns: repeat(6, 1fr);
   grid-template-rows: repeat(5, 1fr);
   gap: 30px 30px;
-  padding: 2rem 0 0 1rem;
+  padding: 0 0 0 1rem;
 `;
 
 const StyledCalendar = styled(ReactCalendar)`
@@ -22,8 +22,9 @@ const StyledCalendar = styled(ReactCalendar)`
   grid-row: 1 / span 3;
 
   place-self: center;
-  height: 100%;
+  height: fit-content;
   width: 100%;
+  max-height: 100%;
 
   border: none;
   border-radius: 4px;
@@ -50,7 +51,7 @@ const StyledCalendar = styled(ReactCalendar)`
     & > .react-calendar__year-view {
       & > .react-calendar__year-view__months {
         & > button {
-          font-size: 1.3rem;
+          font-size: 1rem;
           font-family: "Quicksand";
         }
       }
@@ -59,7 +60,7 @@ const StyledCalendar = styled(ReactCalendar)`
     & > .react-calendar__decade-view {
       & > .react-calendar__decade-view__years {
         & > button {
-          font-size: 1.3rem;
+          font-size: 1rem;
           font-family: "Quicksand";
         }
       }
@@ -68,7 +69,7 @@ const StyledCalendar = styled(ReactCalendar)`
     & > .react-calendar__century-view {
       & > .react-calendar__century-view__decades {
         & > button {
-          font-size: 1.3rem;
+          font-size: 1rem;
           font-family: "Quicksand";
         }
       }
@@ -79,12 +80,12 @@ const StyledCalendar = styled(ReactCalendar)`
         & > div {
           & > .react-calendar__month-view__weekdays {
             & > .react-calendar__month-view__weekdays__weekday {
-              font-size: 1.5rem;
+              font-size: 1.2rem;
             }
           }
           & > .react-calendar__month-view__days {
             & > button {
-              font-size: 1.6rem;
+              font-size: 1.2rem;
               font-family: "Quicksand";
             }
             & > .react-calendar__tile--active:enabled:hover,

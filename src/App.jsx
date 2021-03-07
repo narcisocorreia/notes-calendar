@@ -10,6 +10,13 @@ import MessageManager from "./components/message-manager";
 
 import { getUserData, logout } from "./firebase/firebase-actions";
 import "./assets/fonts/fonts.css";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  setHasUser,
+  setUserNotes,
+  setMessage,
+  hideMessage,
+} from "./store/app-reducer";
 
 const AppContainer = styled.div`
   display: grid;
@@ -22,39 +29,25 @@ const AppContainer = styled.div`
 `;
 
 function App() {
-  const [hasUser, setHasUser] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const [notes, setNotes] = React.useState([]);
+  const hasUser = useSelector((state) => state.app.hasUser);
+  const showMessage = useSelector((state) => state.app.showMessage);
 
-  const [date, setDate] = React.useState(new Date());
-
-  const [showMessage, setShowMessage] = React.useState(false);
-  const [messageType, setMessageType] = React.useState("wait");
-
-  const handleNewMessage = (messageType) => {
-    setMessageType(messageType);
-    setShowMessage(true);
-  };
-
-  const getUserNotes = React.useCallback(() => {
-    getUserData().then((result) => {
-      setNotes(result);
-    });
-    setDate(date);
-  }, [date]);
-
-  const handleExit = () => {
-    setShowMessage(false);
-    getUserNotes();
-  };
-
-  const onChange = (Date) => {
-    setDate(Date);
-  };
+  const getUserNotes = React.useCallback(async () => {
+    dispatch(setMessage("wait"));
+    try {
+      const result = await getUserData();
+      dispatch(setUserNotes(result));
+      dispatch(hideMessage());
+    } catch (error) {
+      dispatch(setMessage("failed"));
+    }
+  }, [dispatch]);
 
   const logOutUser = () => {
-    setHasUser(false);
     logout();
+    dispatch(setHasUser());
   };
 
   React.useEffect(() => {
@@ -66,19 +59,17 @@ function App() {
   if (hasUser) {
     return (
       <AppContainer>
-        {showMessage && (
-          <MessageManager type={messageType} onExitClick={handleExit} />
-        )}
+        {showMessage && <MessageManager />}
         <Header onLogoutClick={logOutUser} />
-        <Calendar onChange={onChange} date={date} notes={notes} />
-        <Sheet date={date} setMessage={handleNewMessage} />
+        <Calendar />
+        <Sheet />
       </AppContainer>
     );
   }
 
   return (
     <AppContainer>
-      <LoginForm loginCompleted={setHasUser} />
+      <LoginForm />
     </AppContainer>
   );
 }

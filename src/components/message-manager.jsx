@@ -1,5 +1,7 @@
 import React from "react";
 import styled from "styled-components";
+import { useSelector, useDispatch } from "react-redux";
+import { hideMessage } from "../store/app-reducer";
 
 const Container = styled.div`
   background-color: rgba(0, 0, 0, 0.8);
@@ -72,10 +74,16 @@ const Failed = styled(Title)`
   color: red;
 `;
 
-function MessageManager(messageProps) {
-  const { type, onExitClick } = messageProps;
+function MessageManager() {
+  const type = useSelector((state) => state.app.messageType);
 
-  if (type === "Wait") {
+  const dispatch = useDispatch();
+
+  const onExitClick = () => {
+    dispatch(hideMessage());
+  };
+
+  if (type === "wait") {
     return (
       <Container>
         <Background>
@@ -101,7 +109,7 @@ function MessageManager(messageProps) {
     <Container>
       <Background>
         <Success>Sucesso</Success>
-        <Message>Nota guardada com sucesso.</Message>
+        <Message>Ação efectuada com sucesso.</Message>
         <ExitBtn onClick={onExitClick}>Continuar</ExitBtn>
       </Background>
     </Container>

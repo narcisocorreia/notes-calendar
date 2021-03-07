@@ -12,6 +12,9 @@ import {
   getTodayData,
 } from "../../firebase/firebase-actions";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setMessage } from "../../store/app-reducer";
+
 const Container = styled.div`
   grid-column: 7 / -1;
   grid-row: 2/ -1;
@@ -36,6 +39,7 @@ const Container = styled.div`
       place-content: center;
       background-color: #ececec59;
       border-radius: 4px;
+      border: none;
       z-index: 1;
 
       & > div {
@@ -104,8 +108,10 @@ const Button = styled.button`
   font-family: "Quicksand";
 `;
 
-function Sheet(SheetProps) {
-  const { date, setMessage } = SheetProps;
+function Sheet() {
+  const date = useSelector((state) => state.app.workingDay);
+
+  const dispatch = useDispatch();
 
   const [text, setText] = React.useState("");
   const [title, SetTitle] = React.useState("");
@@ -124,19 +130,6 @@ function Sheet(SheetProps) {
   );
 
   React.useEffect(() => {
-    setHasNote(false);
-    setEditorState(EditorState.createEmpty());
-
-    getTodayData(fullDate).then((result) => {
-      const note = convertFromRaw(JSON.parse(result.data().note));
-      setEditorState(EditorState.createWithContent(note));
-      setDocID(result.id);
-      setHasNote(true);
-      SetTitle(result.data().titulo);
-    });
-  }, [fullDate]);
-
-  React.useEffect(() => {
     setFullDate({
       day: date.getDate(),
       month: date.getMonth(),
@@ -148,7 +141,20 @@ function Sheet(SheetProps) {
         month: "long",
       })}, ${date.getFullYear()}`
     );
+
+    setHasNote(false);
+    setEditorState(EditorState.createEmpty());
   }, [date]);
+
+  React.useEffect(() => {
+    getTodayData(fullDate).then((result) => {
+      const note = convertFromRaw(JSON.parse(result.data().note));
+      setEditorState(EditorState.createWithContent(note));
+      setDocID(result.id);
+      setHasNote(true);
+      SetTitle(result.data().titulo);
+    });
+  }, [fullDate]);
 
   React.useEffect(() => {
     const contentState = JSON.stringify(
@@ -158,8 +164,9 @@ function Sheet(SheetProps) {
     setText(contentState);
   }, [editorState]);
 
-  const newCalendarNote = () => {
-    setMessage("wait");
+  const newCalendarNote = async () => {
+    dispatch(setMessage("wait"));
+
     const newData = {
       userID: getCurrentUser().uid,
       date: fullDate,
@@ -167,25 +174,35 @@ function Sheet(SheetProps) {
       titulo: title,
     };
 
-    pushData(newData).then((result) => {
+    try {
+      await pushData(newData);
       setHasNote(true);
-      setMessage("success");
-    });
+      dispatch(setMessage("success"));
+    } catch (error) {
+      dispatch(setMessage("failed"));
+    }
   };
 
-  const updateCalendarNote = () => {
-    setMessage("wait");
-    uploadData(text, docID).then((result) => {
-      setMessage("success");
-    });
+  const updateCalendarNote = async () => {
+    dispatch(setMessage("wait"));
+
+    try {
+      await uploadData(text, docID);
+      dispatch("success");
+    } catch (error) {
+      dispatch(setMessage("failed"));
+    }
   };
 
-  const deleteCalendarNote = () => {
-    setMessage("wait");
-    deleteData(docID).then((result) => {
-      setHasNote(false);
-      setMessage("success");
-    });
+  const deleteCalendarNote = async () => {
+    dispatch(setMessage("wait"));
+
+    try {
+      await deleteData(docID);
+      dispatch(setMessage("success"));
+    } catch (error) {
+      dispatch(setMessage("failed"));
+    }
   };
 
   const handleTitleChange = (e) => {

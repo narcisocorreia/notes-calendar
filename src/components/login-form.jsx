@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import { createNewUser, login } from "../firebase/firebase-actions";
+import { useDispatch } from "react-redux";
+import { setHasUser } from "../store/app-reducer";
 
 const Container = styled.div`
   grid-column: 4 / span 6;
@@ -119,7 +121,9 @@ const InfoMessageSpan = styled.span`
   font-family: "Quicksand-SemiBold";
 `;
 
-function LoginForm(loginProps) {
+function LoginForm() {
+  const dispatch = useDispatch();
+
   const [userInfo, setUserInfo] = React.useState({
     email: "",
     password: "",
@@ -131,8 +135,6 @@ function LoginForm(loginProps) {
   });
 
   const [createNewAccount, setCreateNewAccount] = React.useState(false);
-
-  const { loginCompleted } = loginProps;
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -161,7 +163,7 @@ function LoginForm(loginProps) {
 
     login(userInfo.email, userInfo.password)
       .then(() => {
-        loginCompleted(true);
+        dispatch(setHasUser());
       })
       .catch((err) => {
         // eslint-disable-next-line default-case

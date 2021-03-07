@@ -6,6 +6,9 @@ import "react-calendar/dist/Calendar.css";
 
 import NoteEntry from "./note-entry";
 
+import { useSelector, useDispatch } from "react-redux";
+import { setNewDate } from "../../store/app-reducer";
+
 const Container = styled.div`
   grid-row: 2/-1;
   grid-column: 1 / span 6;
@@ -47,6 +50,7 @@ const StyledCalendar = styled(ReactCalendar)`
   & > .react-calendar__viewContainer {
     font-family: "Quicksand";
     padding: 0 0.5rem;
+    max-width: 100%;
 
     & > .react-calendar__year-view {
       & > .react-calendar__year-view__months {
@@ -76,15 +80,29 @@ const StyledCalendar = styled(ReactCalendar)`
     }
 
     & > .react-calendar__month-view {
+      max-width: 100%;
       & > div {
+        max-width: 100%;
+
         & > div {
+          max-width: 100%;
+
           & > .react-calendar__month-view__weekdays {
+            max-width: 100%;
             & > .react-calendar__month-view__weekdays__weekday {
               font-size: 1.2rem;
+              & > abbr {
+                text-decoration: none;
+              }
             }
           }
+
           & > .react-calendar__month-view__days {
+            max-width: 100%;
+
             & > button {
+              max-width: 100%;
+
               font-size: 1.2rem;
               font-family: "Quicksand";
             }
@@ -106,8 +124,12 @@ const StyledCalendar = styled(ReactCalendar)`
 
 const ListPastNotes = styled.div`
   grid-column: 1 / -1;
-  grid-row: 4 / span 2;
+  grid-row: 3 / -1;
 
+  place-self: center;
+  width: 100%;
+
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -120,8 +142,15 @@ const ListPastNotes = styled.div`
   }
 `;
 
-function Calendar(CalendarProps) {
-  const { notes, date, onChange } = CalendarProps;
+function Calendar() {
+  const dispatch = useDispatch();
+
+  const notes = useSelector((state) => state.app.userNotes);
+  const date = useSelector((state) => state.app.workingDay);
+
+  const onChange = (Date) => {
+    dispatch(setNewDate(Date));
+  };
 
   return (
     <Container>
